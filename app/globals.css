@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-fraunces: 'Fraunces', Georgia, serif;
+  --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-plex-mono: 'IBM Plex Mono', monospace;
+  --text-scale: 1;
+}
+
+body {
+  background-color: #F7F3EC;
+  color: #1B1E23;
+  font-family: var(--font-inter);
+  font-size: calc(1rem * var(--text-scale));
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Accessibility: Text Scaling */
+html[data-text-size="normal"] {
+  --text-scale: 1;
+}
+
+html[data-text-size="large"] {
+  --text-scale: 1.15;
+}
+
+html[data-text-size="xlarge"] {
+  --text-scale: 1.3;
+}
+
+/* Accessibility: High Contrast Mode */
+html.high-contrast body {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .bg-station-bg {
+  background-color: #FFFFFF !important;
+}
+
+html.high-contrast .bg-station-ink {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+html.high-contrast .border-station-border {
+  border-color: #000000 !important;
+}
+
+html.high-contrast a,
+html.high-contrast button {
+  text-decoration: underline !important;
+}
+
+/* Respect Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Tabular Data only — schedules, timetables, standings */
+.tabular-data,
+.schedule-grid,
+.league-table {
+  font-family: var(--font-plex-mono);
+  font-feature-settings: "tnum" 1;
+}

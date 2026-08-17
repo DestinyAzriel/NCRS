@@ -20,28 +20,28 @@ export interface KnownArchiveAudioItem {
  */
 export const KNOWN_ARCHIVE_AUDIO_FALLBACKS: KnownArchiveAudioItem[] = [
   {
-    identifier: 'speech-to-announce-common-issue',
-    filename: 'watch-ads-2-en.mp3',
-    url: 'https://archive.org/download/speech-to-announce-common-issue/watch-ads-2-en.mp3',
-    title: 'Community Announcement Preview (English)',
+    identifier: 'musopen-chopin',
+    filename: 'Canon in F minor.mp3',
+    url: 'https://archive.org/download/musopen-chopin/Canon%20in%20F%20minor.mp3',
+    title: 'Canon in F minor — Chopin (Musopen, CC0)',
   },
   {
-    identifier: 'speech-to-announce-common-issue',
-    filename: 'watch-ads-2-vi.mp3',
-    url: 'https://archive.org/download/speech-to-announce-common-issue/watch-ads-2-vi.mp3',
-    title: 'Broadcast Announcement Sample Track A',
+    identifier: 'musopen-chopin',
+    filename: 'Prelude Op. 28 no. 7.mp3',
+    url: 'https://archive.org/download/musopen-chopin/Prelude%20Op.%2028%20no.%207.mp3',
+    title: 'Prelude Op. 28 No. 7 — Chopin (Musopen, CC0)',
   },
   {
-    identifier: 'speech-to-announce-common-issue',
-    filename: 'watch-ads-2-zh.mp3',
-    url: 'https://archive.org/download/speech-to-announce-common-issue/watch-ads-2-zh.mp3',
-    title: 'Broadcast Announcement Sample Track B',
+    identifier: 'musopen-chopin',
+    filename: 'Waltz B. 133 in E flat major.mp3',
+    url: 'https://archive.org/download/musopen-chopin/Waltz%20B.%20133%20in%20E%20flat%20major.mp3',
+    title: 'Waltz in E-flat Major, B.133 — Chopin (Musopen, CC0)',
   },
   {
-    identifier: 'speech-to-announce-common-issue',
-    filename: 'vi-no-voice-because-not-done-yet.mp3',
-    url: 'https://archive.org/download/speech-to-announce-common-issue/vi-no-voice-because-not-done-yet.mp3',
-    title: 'Studio Dialogue Preview Track',
+    identifier: 'musopen-chopin',
+    filename: 'Mazurka Op. 24 no. 2 in C major.mp3',
+    url: 'https://archive.org/download/musopen-chopin/Mazurka%20Op.%2024%20no.%202%20in%20C%20major.mp3',
+    title: 'Mazurka Op. 24 No. 2 — Chopin (Musopen, CC0)',
   },
 ];
 

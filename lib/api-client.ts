@@ -71,7 +71,7 @@ export async function updateStatus(data: any) {
 
 // === News ===
 export async function getNews(limit = 50) {
-  return apiFetch(`/admin/news`);
+  return apiFetch(`/news?limit=${limit}`);
 }
 
 export async function createNews(data: any) {
@@ -88,7 +88,7 @@ export async function deleteNews(id: number) {
 
 // === Schedule ===
 export async function getSchedule() {
-  return apiFetch('/admin/schedule');
+  return apiFetch('/schedule');
 }
 
 export async function createScheduleSlot(data: any) {

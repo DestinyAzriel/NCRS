@@ -6,6 +6,7 @@ import { OnAirBar } from '@/components/layout/OnAirBar';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { FloatingAccessibility } from '@/components/ui/FloatingAccessibility';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: 'Nyanthepa Community Radio 107.6 FM | Nsanje & Lower Shire',
@@ -35,6 +36,8 @@ export default function RootLayout({
           <Footer />
           {/* Floating Accessibility & Staff Portal Widget */}
           <FloatingAccessibility />
+          {/* Vercel Analytics — page view tracking */}
+          <Analytics />
         </AccessibilityProvider>
       </body>
     </html>

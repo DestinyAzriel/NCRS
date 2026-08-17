@@ -26,34 +26,32 @@ export function Header() {
   return (
     <header className="bg-station-bg border-b border-station-border shadow-sm">
       {/* 1. Masthead Main Header Row */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-6">
           {/* Station Identity Masthead */}
-          <Link href="/" className="group flex items-center gap-3.5 shrink-0">
-            <div className="w-12 h-12 rounded-lg bg-station-ink flex items-center justify-center text-station-bg border-2 border-accent-gold shadow group-hover:border-accent-live transition-colors">
-              <Radio className="w-6 h-6 text-accent-gold" />
+          <Link href="/" className="group flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-station-ink flex items-center justify-center text-station-bg border-2 border-accent-gold shadow group-hover:border-accent-live transition-colors shrink-0">
+              <Radio className="w-5 h-5 sm:w-6 sm:h-6 text-accent-gold" />
             </div>
-            <div>
-              <span className="block font-display text-2xl sm:text-3xl font-bold tracking-tight text-station-ink leading-tight group-hover:text-accent-live transition-colors">
+            <div className="min-w-0 flex-1">
+              <span className="block font-display text-lg sm:text-2xl md:text-3xl font-bold tracking-tight text-station-ink leading-tight group-hover:text-accent-live transition-colors truncate">
                 Nyanthepa Community Radio
               </span>
-              <span className="block text-xs font-sans font-semibold text-accent-live tracking-wider uppercase mt-0.5">
+              <span className="block text-[10px] sm:text-xs font-sans font-semibold text-accent-live tracking-wider uppercase mt-0.5 truncate">
                 107.6 MHz FM • Voice of Nsanje & Lower Shire
               </span>
             </div>
           </Link>
 
-
-
           {/* Mobile Menu Toggle Button */}
-          <div className="lg:hidden flex items-center">
+          <div className="lg:hidden flex items-center shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded border border-station-border bg-white text-station-ink focus:outline-none focus:ring-2 focus:ring-accent-live shadow-sm"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
         </div>

@@ -28,19 +28,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [user, setUser] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const isLoginPage = pathname === '/admin/login';
+
   useEffect(() => {
+    if (isLoginPage) return;
     const u = getStoredUser();
     if (!u) {
       router.push('/admin/login');
     } else {
       setUser(u);
     }
-  }, [router]);
+  }, [router, pathname, isLoginPage]);
 
   const handleLogout = () => {
     clearToken();
+    setUser(null);
     router.push('/admin/login');
   };
+
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   const filteredNav = NAV.filter(item => user && item.roles.includes(user.role));
 

@@ -110,7 +110,7 @@ export function FloatingAccessibility() {
 
           {/* Staff Portal */}
           <Link
-            href="/admin"
+            href="/admin/login"
             className="flex items-center gap-2 px-3 py-2 rounded-lg bg-accent-live/10 hover:bg-accent-live/20 border border-accent-live/20 hover:border-accent-live/50 text-accent-live text-xs font-semibold transition-all"
             title="Staff Management CMS"
             onClick={() => setOpen(false)}

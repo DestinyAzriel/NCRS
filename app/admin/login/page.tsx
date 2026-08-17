@@ -21,7 +21,19 @@ export default function AdminLoginPage() {
       await login(email, password);
       router.push('/admin');
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please check credentials.');
+      const msg = err.message || '';
+      if (
+        msg.toLowerCase().includes('fetch') ||
+        msg.toLowerCase().includes('network') ||
+        msg.toLowerCase().includes('failed to fetch') ||
+        msg === 'Failed to fetch'
+      ) {
+        setError(
+          'Cannot reach the CMS backend. The API server is not running or NEXT_PUBLIC_API_URL is not configured in Vercel. Please host the backend and set the environment variable.'
+        );
+      } else {
+        setError(msg || 'Login failed. Please check your credentials and try again.');
+      }
     } finally {
       setLoading(false);
     }

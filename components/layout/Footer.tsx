@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Radio, ShieldCheck, Mail, Phone, MapPin } from 'lucide-react';
+import { Radio, ShieldCheck, Mail, Phone, MapPin, Lock } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -85,6 +85,12 @@ export function Footer() {
               <li>
                 <Link href="/about" className="text-station-bg/80 hover:text-accent-gold transition-colors">
                   Editorial Charter & Board of Trustees
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/login" className="text-station-bg/60 hover:text-accent-gold transition-colors inline-flex items-center gap-1.5">
+                  <Lock className="w-3 h-3 text-accent-gold" />
+                  <span>Staff Portal (CMS)</span>
                 </Link>
               </li>
             </ul>

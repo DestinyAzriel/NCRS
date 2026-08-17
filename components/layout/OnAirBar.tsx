@@ -14,11 +14,11 @@ export function OnAirBar() {
       aria-label="Live Broadcast Player"
       className="sticky top-0 z-50 w-full bg-station-ink text-station-bg border-b border-station-border/20 shadow-md transition-colors"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-12 flex items-center justify-between gap-2 sm:gap-4">
         {/* Live Station Brand & Pulse Indicator */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-sans tracking-wide font-semibold text-station-bg border transition-colors ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[10px] sm:text-xs font-sans tracking-wide font-semibold text-station-bg border transition-colors ${
               audioState === 'stream_down'
                 ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
                 : audioState === 'buffering'
@@ -29,31 +29,31 @@ export function OnAirBar() {
             {audioState === 'buffering' ? (
               <>
                 <Loader2 className="w-2.5 h-2.5 animate-spin text-accent-gold" />
-                <span className="font-bold text-[11px]">BUFFERING</span>
+                <span className="font-bold text-[10px] sm:text-[11px]">BUFFERING</span>
               </>
             ) : audioState === 'stream_down' ? (
               <>
                 <AlertCircle className="w-2.5 h-2.5 text-amber-400" />
-                <span className="font-bold text-[11px]">BACK SHORTLY</span>
+                <span className="font-bold text-[10px] sm:text-[11px]">BACK SHORTLY</span>
               </>
             ) : (
               <>
                 <span
-                  className={`w-2.5 h-2.5 rounded-full ${
+                  className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ${
                     isPlaying ? 'bg-accent-live animate-live-pulse' : 'bg-station-bg/40'
                   }`}
                   aria-hidden="true"
                 />
-                <span className="font-bold text-[11px]">ON AIR</span>
+                <span className="font-bold text-[10px] sm:text-[11px]">ON AIR</span>
               </>
             )}
           </div>
 
           <Link
             href="/live"
-            className="flex items-center gap-2 hover:text-accent-gold transition-colors focus-visible:outline-accent-gold"
+            className="flex items-center gap-1.5 sm:gap-2 hover:text-accent-gold transition-colors focus-visible:outline-accent-gold"
           >
-            <span className="font-display font-bold tracking-tight text-sm sm:text-base text-white">
+            <span className="font-display font-bold tracking-tight text-xs sm:text-base text-white">
               Nyanthepa 107.6 FM
             </span>
             <span className="hidden md:inline text-xs font-sans text-station-bg/60">

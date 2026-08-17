@@ -111,7 +111,7 @@ export default function AdminDashboardPage() {
       )}
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         <Link
           href="/admin/news"
           className="bg-white p-4 rounded border border-station-border shadow-sm hover:border-accent-live transition-colors"
@@ -197,7 +197,7 @@ export default function AdminDashboardPage() {
           This system allows station staff to update the website and mobile app without touching any code. Below are the 5 core operations:
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 pt-2">
           <div className="p-3.5 rounded bg-station-sand/40 border border-station-border space-y-2">
             <div className="text-xs font-bold text-accent-live font-mono">STEP 1</div>
             <div className="font-display text-sm font-bold text-station-ink">Publish News Story</div>

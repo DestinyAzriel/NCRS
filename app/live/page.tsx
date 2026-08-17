@@ -11,7 +11,7 @@ import {
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export default function LiveStudioPage() {
-  const { isPlaying, togglePlay, currentTrack, language } = useAccessibility();
+  const { isPlaying, togglePlay, currentTrack, language, isFallbackStream } = useAccessibility();
   const [status, setStatus] = useState<any>(null);
   const [todayShows, setTodayShows] = useState<any[]>([]);
   const [muted, setMuted] = useState(false);
@@ -84,9 +84,17 @@ export default function LiveStudioPage() {
 
             {/* Current Show Title */}
             <div className="py-8 space-y-3">
-              <span className="text-xs font-sans font-semibold text-accent-live uppercase tracking-wider">
-                {language === 'en' ? 'Currently Broadcasting' : 'Chomwe Chikukamba'}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-sans font-semibold text-accent-live uppercase tracking-wider">
+                  {language === 'en' ? 'Currently Broadcasting' : 'Chomwe Chikukamba'}
+                </span>
+                {isFallbackStream && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-accent-gold/20 border border-accent-gold/40 text-accent-gold text-[11px] font-sans font-bold">
+                    <Sparkles className="w-3 h-3" />
+                    <span>Live stream connecting soon — preview</span>
+                  </span>
+                )}
+              </div>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white leading-tight">
                 {status?.on_air_show_title || currentTrack.title}
               </h2>

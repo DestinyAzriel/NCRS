@@ -6,7 +6,7 @@ import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import { Play, Pause, Radio, Volume2, VolumeX, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export function OnAirBar() {
-  const { isPlaying, audioState, togglePlay, currentTrack, language, muted, toggleMute } =
+  const { isPlaying, audioState, togglePlay, currentTrack, language, muted, toggleMute, isFallbackStream } =
     useAccessibility();
 
   return (
@@ -62,11 +62,21 @@ export function OnAirBar() {
           </Link>
         </div>
 
-        {/* Current Program info or stream down message */}
+        {/* Current Program info or stream down message / fallback label */}
         <div className="hidden sm:flex items-center gap-2 overflow-hidden text-xs truncate">
           {audioState === 'stream_down' ? (
             <span className="text-amber-300 font-sans font-medium flex items-center gap-1.5">
               <span>Studio signal reconnecting — broadcast resumes momentarily.</span>
+            </span>
+          ) : isFallbackStream ? (
+            <span className="inline-flex items-center gap-1.5 text-accent-gold font-sans font-semibold">
+              <Radio className="w-3.5 h-3.5 text-accent-gold shrink-0" />
+              <span className="px-2 py-0.5 rounded bg-accent-gold/20 border border-accent-gold/40 text-[11px]">
+                Live stream connecting soon — preview
+              </span>
+              <span className="text-station-bg/80 truncate">
+                • {currentTrack.title}
+              </span>
             </span>
           ) : (
             <>
@@ -77,7 +87,6 @@ export function OnAirBar() {
               <span className="font-semibold text-station-bg truncate font-sans">
                 {currentTrack.title}
               </span>
-
             </>
           )}
         </div>

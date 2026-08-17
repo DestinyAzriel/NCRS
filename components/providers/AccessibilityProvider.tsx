@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { getStatus } from '@/lib/api-client';
+import { getArchiveFallbackAudioUrl } from '@/lib/audio-fallback';
 
 type TextSize = 'normal' | 'large' | 'xlarge';
 type Language = 'en' | 'sena';
@@ -23,6 +24,7 @@ interface AccessibilityContextType {
   audioState: AudioPlaybackState;
   streamUrl: string;
   setStreamUrl: (url: string) => void;
+  isFallbackStream: boolean;
   togglePlay: () => void;
   playStream: () => void;
   pauseStream: () => void;
@@ -40,9 +42,6 @@ interface AccessibilityContextType {
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
-// Fallback high-fidelity broadcast loop (reliable CC audio stream for low-bandwidth demo testing)
-const DEFAULT_DEMO_STREAM = 'https://stream.zeno.fm/f3wvbbqmdg8uv';
-
 export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
   const [textSize, setTextSizeState] = useState<TextSize>('normal');
   const [highContrast, setHighContrastState] = useState<boolean>(false);
@@ -51,7 +50,8 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   // Audio State
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [audioState, setAudioState] = useState<AudioPlaybackState>('idle');
-  const [streamUrl, setStreamUrl] = useState<string>(DEFAULT_DEMO_STREAM);
+  const [streamUrl, setStreamUrl] = useState<string>('');
+  const [isFallbackStream, setIsFallbackStream] = useState<boolean>(false);
   const [volume, setVolumeState] = useState<number>(0.85);
   const [muted, setMuted] = useState<boolean>(false);
   const [currentTrack, setCurrentTrack] = useState({
@@ -88,8 +88,16 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     async function loadStreamConfig() {
       try {
         const st = await getStatus();
-        if (st?.stream_url && st.stream_url.startsWith('http')) {
+        if (st?.stream_url && st.stream_url.startsWith('http') && !st.stream_url.includes('example.com')) {
           setStreamUrl(st.stream_url);
+          setIsFallbackStream(false);
+        } else {
+          // Resolve Internet Archive fallback audio stream
+          const archiveUrl = await getArchiveFallbackAudioUrl();
+          if (archiveUrl) {
+            setStreamUrl(archiveUrl);
+            setIsFallbackStream(true);
+          }
         }
         if (st) {
           setCurrentTrack({
@@ -99,7 +107,12 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
           });
         }
       } catch (err) {
-        console.log('Using default broadcast stream fallback');
+        // Fallback to Internet Archive
+        const archiveUrl = await getArchiveFallbackAudioUrl();
+        if (archiveUrl) {
+          setStreamUrl(archiveUrl);
+          setIsFallbackStream(true);
+        }
       }
     }
     loadStreamConfig();
@@ -119,10 +132,27 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
       setAudioState('paused');
       setIsPlaying(false);
     };
-    const handleError = () => {
+    const handleError = async () => {
+      // If direct stream failed, try Internet Archive fallback
+      if (!isFallbackStream) {
+        try {
+          const archiveUrl = await getArchiveFallbackAudioUrl();
+          if (archiveUrl && audioRef.current) {
+            setIsFallbackStream(true);
+            setStreamUrl(archiveUrl);
+            audioRef.current.src = archiveUrl;
+            audioRef.current.loop = true;
+            audioRef.current.load();
+            audioRef.current.play().catch(() => setAudioState('stream_down'));
+            return;
+          }
+        } catch {}
+      }
+
       setAudioState('stream_down');
       setIsPlaying(false);
-      // Auto reconnect attempt after 5 seconds
+
+      // Auto reconnect attempt after 8 seconds
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
       reconnectTimeoutRef.current = setTimeout(() => {
         if (audioRef.current && isPlaying) {
@@ -130,7 +160,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
           audioRef.current.load();
           audioRef.current.play().catch(() => setAudioState('stream_down'));
         }
-      }, 5000);
+      }, 8000);
     };
 
     audio.addEventListener('waiting', handleWaiting);
@@ -145,7 +175,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
       audio.removeEventListener('error', handleError);
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
     };
-  }, [isPlaying]);
+  }, [isPlaying, isFallbackStream]);
 
   const setTextSize = (size: TextSize) => {
     setTextSizeState(size);
@@ -190,29 +220,49 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   };
 
   // Audio Controls
-  const playStream = () => {
+  const playStream = async () => {
     const audio = audioRef.current;
     if (!audio) return;
     setAudioState('buffering');
+
+    // Ensure we have a valid stream URL before playing
+    if (!audio.src || audio.src === window.location.href || audio.src === '') {
+      const archiveUrl = await getArchiveFallbackAudioUrl();
+      if (archiveUrl) {
+        setStreamUrl(archiveUrl);
+        setIsFallbackStream(true);
+        audio.src = archiveUrl;
+        audio.loop = true;
+      }
+    }
+
     audio
       .play()
       .then(() => {
         setIsPlaying(true);
         setAudioState('playing');
       })
-      .catch((e) => {
-        console.warn('Audio play error, retrying fallback stream:', e);
-        // Fallback to secondary stream
-        if (audio.src !== DEFAULT_DEMO_STREAM) {
-          audio.src = DEFAULT_DEMO_STREAM;
-          audio.load();
-          audio.play().then(() => {
-            setIsPlaying(true);
-            setAudioState('playing');
-          }).catch(() => setAudioState('stream_down'));
-        } else {
-          setAudioState('stream_down');
-        }
+      .catch(async (e) => {
+        console.warn('Audio stream primary play error, switching to Internet Archive CC0 stream:', e);
+        try {
+          const archiveUrl = await getArchiveFallbackAudioUrl();
+          if (archiveUrl && audioRef.current) {
+            setIsFallbackStream(true);
+            setStreamUrl(archiveUrl);
+            audioRef.current.src = archiveUrl;
+            audioRef.current.loop = true;
+            audioRef.current.load();
+            audioRef.current
+              .play()
+              .then(() => {
+                setIsPlaying(true);
+                setAudioState('playing');
+              })
+              .catch(() => setAudioState('stream_down'));
+            return;
+          }
+        } catch {}
+        setAudioState('stream_down');
       });
   };
 
@@ -263,6 +313,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
         audioState,
         streamUrl,
         setStreamUrl,
+        isFallbackStream,
         togglePlay,
         playStream,
         pauseStream,
